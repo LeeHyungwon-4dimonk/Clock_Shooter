@@ -1,3 +1,4 @@
+using DG.Tweening;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -25,11 +26,7 @@ public class FieldMover : MonoBehaviour
         {
             targetYRotation -= rotateAngle;
         }
-    }
 
-    void Update()
-    {
-        Quaternion targetRotation = Quaternion.Euler(0f, targetYRotation, 0f);
-        transform.rotation = Quaternion.Lerp(transform.rotation, targetRotation, Time.deltaTime * rotateSpeed);
+        transform.DORotate(new Vector3(0, targetYRotation, 0), 0.2f, RotateMode.Fast);
     }
 }
