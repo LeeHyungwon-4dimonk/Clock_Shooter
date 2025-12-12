@@ -21,10 +21,12 @@ public class FieldMover : MonoBehaviour
         if (input.x > 0.1f)
         {
             _targetYRotation += _rotateAngle;
+            Manager.Game.AddTurn();
         }
         else if (input.x < -0.1f)
         {
             _targetYRotation -= _rotateAngle;
+            Manager.Game.SubTurn();
         }
 
         transform.DORotate(new Vector3(0, _targetYRotation, 0), 0.2f, RotateMode.Fast);
