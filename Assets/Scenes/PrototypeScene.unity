@@ -786,9 +786,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae611a6972996a048a3f1ed458090291, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShooterInput
-  bulletPrefab: {fileID: 516401707410729493, guid: 3ce4451dc1af60643a4006c6def64f80, type: 3}
-  firePoint: {fileID: 1267992989}
-  bulletSpeed: 10
+  _firePoint: {fileID: 1267992989}
+  _bulletSpeed: 10
 --- !u!114 &1267992991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1089,7 +1088,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b13a7a5a3617ca4892177514fc7045c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FieldMover
-  rotateAngle: 45
+  _rotateAngle: 45
+  _rotateSpeed: 10
 --- !u!114 &2022254673
 MonoBehaviour:
   m_ObjectHideFlags: 0

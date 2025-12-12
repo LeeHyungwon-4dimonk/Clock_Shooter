@@ -8,6 +8,7 @@ public static class Manager
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void Init()
     {
+        AssetLoaderProvider.Initialize(new ResourcesAssetLoader());
         PoolManager.CreateInstance();
         GameManager.CreateInstance();
     }

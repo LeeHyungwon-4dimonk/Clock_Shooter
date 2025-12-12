@@ -34,6 +34,25 @@ public class PoolManager : Singleton<PoolManager>
         _poolsDict.Add(key, newPool);
     }
 
+    public void CreatePool(string key, GameObject prefab, int size, string name)
+    {
+        if (_poolsDict.ContainsKey(key))
+        {
+            Debug.LogWarning($"Pool with key '{key}' already exists.");
+            return;
+        }
+
+        Pool newPool = new Pool()
+        {
+            _key = key,
+            _prefab = prefab,
+            _size = size
+        };
+
+        newPool.Init(this.transform, name);
+        _poolsDict.Add(key, newPool);
+    }
+
     public GameObject Get(string key)
     {
         if(_poolsDict.ContainsKey(key)) return _poolsDict[key].Get();

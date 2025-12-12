@@ -13,9 +13,24 @@ public class Pool
 
     public void Init(Transform parent)
     {
-        parent = _parent;
+        _parent = parent;
+        CreateObjects();
+    }
 
-        for(int i = 0; i < _size; i++)
+    public void Init(Transform root, string childName)
+    {
+        // root 아래 childName 자식 오브젝트 생성
+        GameObject child = new GameObject(childName);
+        child.transform.SetParent(root);
+        child.transform.localPosition = Vector3.zero;
+
+        _parent = child.transform;
+        CreateObjects();
+    }
+
+    private void CreateObjects()
+    {
+        for (int i = 0; i < _size; i++)
         {
             GameObject obj = GameObject.Instantiate(_prefab, _parent);
             obj.SetActive(false);

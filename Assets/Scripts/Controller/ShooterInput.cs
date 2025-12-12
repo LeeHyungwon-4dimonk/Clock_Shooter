@@ -1,9 +1,9 @@
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class ShooterInput : MonoBehaviour
 {
-    [SerializeField] private GameObject _bulletPrefab;
     [SerializeField] private Transform _firePoint;
     [SerializeField] private float _bulletSpeed = 10f;
 
@@ -11,11 +11,29 @@ public class ShooterInput : MonoBehaviour
     private InputAction _fireUpAction;
     private InputAction _fireDownAction;
 
+    public bool IsInitialized { get; private set; } = false;
+    
     private void Awake()
     {
         _playerInput = GetComponent<PlayerInput>();
         _fireUpAction = _playerInput.actions["FireUp"];
         _fireDownAction = _playerInput.actions["FireDown"];
+    }
+
+    private async void Start()
+    {
+        await InitAsync();
+    }
+
+    public async Task InitAsync()
+    {
+        if (IsInitialized) return;
+
+        var _bulletPrefab = await AssetLoaderProvider.Loader.LoadAsync<GameObject>("Bullet");
+
+        Manager.Pool.CreatePool("Bullet", _bulletPrefab, 4, "Bullets");
+
+        IsInitialized = true;
     }
 
     private void OnEnable()
@@ -42,7 +60,8 @@ public class ShooterInput : MonoBehaviour
 
     private void Fire(Vector3 dir)
     {
-        GameObject bullet = Instantiate(_bulletPrefab, _firePoint.position, Quaternion.identity);
+        GameObject bullet = Manager.Pool.Get("Bullet");
+        bullet.transform.position = _firePoint.transform.position;
         bullet.GetComponent<Rigidbody>().linearVelocity = dir * _bulletSpeed;
     }
 }
