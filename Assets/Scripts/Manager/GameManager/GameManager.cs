@@ -1,23 +1,18 @@
 using System;
-using System.Threading.Tasks;
 using UnityEngine;
 
 public class GameManager : Singleton<GameManager>
 {
-    public int TurnStack { get; private set; } = 0;
-    public event Action<int> OnTurnStackChanged;
+    public TurnStack turnStack { get; private set; }
 
-    public void AddTurn()
+    private void Awake()
     {
-        TurnStack++;
-        OnTurnStackChanged?.Invoke(1);
-        Debug.Log(TurnStack);
+        turnStack = new TurnStack();
+        turnStack.OnChanged += HandleTurnChanged;
     }
 
-    public void SubTurn()
+    private void HandleTurnChanged(int prev, int current)
     {
-        TurnStack--;
-        OnTurnStackChanged?.Invoke(-1);
-        Debug.Log(TurnStack);
+        Debug.Log($"TurnStack: {prev} -> {current}");
     }
 }

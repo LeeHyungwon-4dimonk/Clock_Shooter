@@ -3,27 +3,27 @@ using UnityEngine;
 
 public class MonsterController : MonoBehaviour
 {
-    [SerializeField] float moveStep = 0.4f;
-    [SerializeField] float moveDuration = 0.3f;
+    [SerializeField] float moveStep = 0.8f;
+    [SerializeField] float moveDuration = 0.2f;
 
     private void OnEnable()
     {
-        Manager.Game.OnTurnStackChanged+= MoveRadius;
+        Manager.Game.turnStack.OnChanged += MoveRadius;
     }
 
     private void OnDisable()
     {
-        Manager.Game.OnTurnStackChanged -= MoveRadius;
+        Manager.Game.turnStack.OnChanged -= MoveRadius;
     }
 
-    public void MoveRadius(int dir)
+    public void MoveRadius(int prev, int cur)
     {
         transform.DOKill();
 
         Vector3 localPos = transform.localPosition;
         float radius = localPos.magnitude;
 
-        radius += (moveStep * -dir);
+        radius += (moveStep * -(cur - prev));
 
         Vector3 targetPos = localPos.normalized * radius;
 

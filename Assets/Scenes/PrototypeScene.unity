@@ -1650,6 +1650,14 @@ PrefabInstance:
       propertyPath: m_Name
       value: Monster
       objectReference: {fileID: 0}
+    - target: {fileID: 1787088480809763251, guid: 9003e1a62ee3dab4cb6f0c02a0ce6e57, type: 3}
+      propertyPath: moveStep
+      value: 0.8
+      objectReference: {fileID: 0}
+    - target: {fileID: 1787088480809763251, guid: 9003e1a62ee3dab4cb6f0c02a0ce6e57, type: 3}
+      propertyPath: moveDuration
+      value: 0.2
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
