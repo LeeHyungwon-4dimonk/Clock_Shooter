@@ -13,6 +13,6 @@ public class GameManager : Singleton<GameManager>
 
     private void HandleTurnChanged(int prev, int current)
     {
-        Debug.Log($"TurnStack: {prev} -> {current}");
+
     }
 }

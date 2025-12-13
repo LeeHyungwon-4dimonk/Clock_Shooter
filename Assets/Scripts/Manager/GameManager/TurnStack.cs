@@ -12,7 +12,7 @@ public class TurnStack
         Current = initialValue;
     }
 
-    public void Add(int amount = 1)
+    public void MoveClockwise(int amount = 1)
     {
         if (amount <= 0) return;
 
@@ -21,7 +21,7 @@ public class TurnStack
         OnChanged?.Invoke(prev, Current);
     }
 
-    public bool TrySub(int amount = 1)
+    public bool TryMoveCounterClockwise(int amount = 1)
     {
         if(Current < amount) return false;
 
@@ -29,5 +29,11 @@ public class TurnStack
         Current -= amount;
         OnChanged?.Invoke(prev, Current);
         return true;
+    }
+
+    public void OtherAction()
+    {
+        int prev = Current;
+        OnChanged?.Invoke(prev, prev + 1);
     }
 }

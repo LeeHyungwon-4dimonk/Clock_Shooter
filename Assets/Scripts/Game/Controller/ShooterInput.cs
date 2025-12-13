@@ -63,6 +63,6 @@ public class ShooterInput : MonoBehaviour
         GameObject bullet = Manager.Pool.Get("Bullet");
         bullet.transform.position = _firePoint.transform.position;
         bullet.GetComponent<Rigidbody>().linearVelocity = dir * _bulletSpeed;
-        Manager.Game.turnStack.Add();
+        Manager.Game.turnStack.OtherAction();
     }
 }

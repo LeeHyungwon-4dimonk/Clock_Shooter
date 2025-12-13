@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class MonsterController : MonoBehaviour
 {
-    [SerializeField] float moveStep = 0.8f;
+    [SerializeField] float moveStep = 1f;
     [SerializeField] float moveDuration = 0.2f;
 
     private void OnEnable()
@@ -21,12 +21,20 @@ public class MonsterController : MonoBehaviour
         transform.DOKill();
 
         Vector3 localPos = transform.localPosition;
-        float radius = localPos.magnitude;
 
+        float radius = localPos.magnitude;
         radius += (moveStep * -(cur - prev));
 
         Vector3 targetPos = localPos.normalized * radius;
+        targetPos.y = localPos.y;
 
         transform.DOLocalMove(targetPos, moveDuration).SetEase(Ease.OutQuad);
+    }
+
+
+    public void OnCollisionEnter(Collision collision)
+    {
+        if(collision.gameObject.CompareTag("Player"))
+            Destroy(gameObject);
     }
 }

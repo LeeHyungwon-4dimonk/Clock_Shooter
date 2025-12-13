@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 1787088480809763251}
   m_Layer: 0
   m_Name: Monster
-  m_TagString: Untagged
+  m_TagString: Monster
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -28,9 +28,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1442588200393941263}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0.9054544, z: -12.189244}
-  m_LocalScale: {x: 0.58482116, y: 1.6238987, z: 0.5848212}
+  m_LocalScale: {x: 0.020899419, y: 6.3685083, z: 0.020899419}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -125,5 +125,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cc1606011fae3148ab8dea96dd011dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterController
-  moveStep: 0.2
-  moveDuration: 0.3
+  moveStep: 0.8
+  moveDuration: 0.2
