@@ -31,7 +31,7 @@ public class ShooterInput : MonoBehaviour
 
         var _bulletPrefab = await AssetLoaderProvider.Loader.LoadAsync<GameObject>("Bullet");
 
-        Manager.Pool.CreatePool("Bullet", _bulletPrefab, 4, "Bullets");
+        Manager.Pool.CreatePool("Bullet", _bulletPrefab, 4, "Bullets", this.transform);
 
         IsInitialized = true;
     }

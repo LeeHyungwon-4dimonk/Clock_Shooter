@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using UnityEngine;
 
 public class MonsterController : MonoBehaviour
@@ -7,6 +8,8 @@ public class MonsterController : MonoBehaviour
     [SerializeField] float moveDuration = 0.2f;
 
     private float[] vectors = new float[2];
+
+    public static event Action OnMonsterDestroyed;
 
     private void Start()
     {
@@ -41,7 +44,9 @@ public class MonsterController : MonoBehaviour
 
     public void OnCollisionEnter(Collision collision)
     {
-        if(collision.gameObject.CompareTag("Player"))
-            Destroy(gameObject);
+        if (!collision.gameObject.CompareTag("Player")) return;
+
+        OnMonsterDestroyed?.Invoke();
+        Manager.Pool.Return("Monster", gameObject);
     }
 }

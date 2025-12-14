@@ -8,30 +8,13 @@ public class PoolManager : Singleton<PoolManager>
 
     private void Awake()
     {
+        /*
         foreach (var pool in _pools)
         {
             pool.Init(this.transform);
             _poolsDict.Add(pool._key, pool);
         }
-    }
-
-    public void CreatePool(string key, GameObject prefab, int size)
-    {
-        if(_poolsDict.ContainsKey(key))
-        {
-            Debug.LogWarning($"Pool with key '{key}' already exists.");
-            return;
-        }
-
-        Pool newPool = new Pool()
-        {
-            _key = key,
-            _prefab = prefab,
-            _size = size
-        };
-
-        newPool.Init(this.transform);
-        _poolsDict.Add(key, newPool);
+        */
     }
 
     public void CreatePool(string key, GameObject prefab, int size, string name)
@@ -50,6 +33,25 @@ public class PoolManager : Singleton<PoolManager>
         };
 
         newPool.Init(this.transform, name);
+        _poolsDict.Add(key, newPool);
+    }
+
+    public void CreatePool(string key, GameObject prefab, int size, string name, Transform targetTrm)
+    {
+        if (_poolsDict.ContainsKey(key))
+        {
+            Debug.LogWarning($"Pool with key '{key}' already exists.");
+            return;
+        }
+
+        Pool newPool = new Pool()
+        {
+            _key = key,
+            _prefab = prefab,
+            _size = size
+        };
+
+        newPool.Init(targetTrm, name);
         _poolsDict.Add(key, newPool);
     }
 

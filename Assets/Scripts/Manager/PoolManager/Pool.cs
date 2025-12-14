@@ -11,12 +11,6 @@ public class Pool
     private Queue<GameObject> _objects = new Queue<GameObject>();
     private Transform _parent;
 
-    public void Init(Transform parent)
-    {
-        _parent = parent;
-        CreateObjects();
-    }
-
     public void Init(Transform root, string childName)
     {
         // root 아래 childName 자식 오브젝트 생성
