@@ -4,43 +4,64 @@ using UnityEngine;
 
 public class MonsterController : MonoBehaviour
 {
-    [SerializeField] int moveTurn = 6;
-    [SerializeField] float moveDuration = 0.2f;
-
-    private float[] vectors = new float[2];
-
     public static event Action OnMonsterDestroyed;
+    public int DirectionIndex { get; private set; }
+    public int DistanceStep { get; private set; }
 
-    private void Start()
+    private float _stepDistance = 2.5f;
+    private float _spawnRadius = 13f;
+    private float _yOffset = 1f;
+    private int _directionCount = 8;
+
+    private float _moveDuration = 0.2f;
+
+    public void Initialize(int directionIndex)
     {
-        vectors[0] = transform.localPosition.x / moveTurn;
-        vectors[1] = transform.localPosition.z / moveTurn;
+        DirectionIndex = directionIndex;
+        DistanceStep = 0;
+        UpdatePosition();
     }
 
     private void OnEnable()
     {
-        Manager.Game.turnStack.OnChanged += MoveRadius;
+        Manager.Game.turnStack.OnChanged += Move;
     }
 
     private void OnDisable()
     {
-        Manager.Game.turnStack.OnChanged -= MoveRadius;
+        Manager.Game.turnStack.OnChanged -= Move;
     }
 
-    public void MoveRadius(int prev, int cur)
+    private void Move(int prev, int cur)
+    {
+        if (cur - prev < 0) MoveBackward();
+        else if(cur - prev > 0) MoveForward();
+    }
+
+    public void MoveForward()
+    {
+        DistanceStep++;
+        UpdatePosition();
+    }
+
+    public void MoveBackward()
+    {
+        DistanceStep = Mathf.Max(0, DistanceStep - 1);
+        UpdatePosition();
+    }
+
+    private void UpdatePosition()
     {
         transform.DOKill();
 
-        Vector3 curPos = transform.localPosition;
+        float angle = DirectionIndex * (360f / _directionCount);
+        float rad = angle * Mathf.Deg2Rad;
 
-        int dir = cur - prev;
+        float radius = _spawnRadius - (DistanceStep * _stepDistance);
 
-        Vector3 targetPos = new Vector3(curPos.x - vectors[0] * dir,
-            curPos.y, curPos.z - vectors[1] * dir);
-
-        transform.DOLocalMove(targetPos, moveDuration).SetEase(Ease.OutQuad);
+        Vector3 targetPos = new Vector3(Mathf.Cos(rad) * radius, _yOffset, Mathf.Sin(rad) * radius);
+        transform.DOLocalMove(targetPos, _moveDuration).SetEase(Ease.OutQuad);
     }
-
 
     public void OnCollisionEnter(Collision collision)
     {

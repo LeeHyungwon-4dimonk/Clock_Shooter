@@ -52,6 +52,9 @@ public class MonsterSummoner : MonoBehaviour
         int spawnIndex = Random.Range(0, _directionCount);
         monster.transform.localPosition = GetSpawnPosition(spawnIndex);
 
+        var controller = monster.GetComponent<MonsterController>();
+        controller.Initialize(spawnIndex);
+
         _summonNum++;
     }
 
