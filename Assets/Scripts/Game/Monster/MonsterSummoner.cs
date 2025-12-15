@@ -15,8 +15,7 @@ public class MonsterSummoner : MonoBehaviour
 
     private async Task InitAsync()
     {
-        var monsterPrefab =
-            await AssetLoaderProvider.Loader.LoadAsync<GameObject>("Monster");
+        var monsterPrefab = await AssetLoaderProvider.Loader.LoadAsync<GameObject>("Monster");
 
         Manager.Pool.CreatePool("Monster", monsterPrefab, _maxSummonNum, "Monsters", transform);
     }
@@ -37,10 +36,8 @@ public class MonsterSummoner : MonoBehaviour
     {
         int delta = cur - prev;
 
-        // 이동은 중앙에서 단 한 번
         Manager.Game.monsterPositionManager.ResolveTurnMove(delta);
 
-        // 전진일 때만 소환
         if (delta <= 0) return;
         if (_summonNum >= _maxSummonNum) return;
 
@@ -55,6 +52,5 @@ public class MonsterSummoner : MonoBehaviour
     private void OnMonsterDestroyed()
     {
         _summonNum = Mathf.Max(0, _summonNum - 1);
-        Debug.Log(_summonNum);
     }
 }

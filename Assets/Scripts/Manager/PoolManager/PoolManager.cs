@@ -6,17 +6,6 @@ public class PoolManager : Singleton<PoolManager>
     [SerializeField] private List<Pool> _pools = new List<Pool>();
     private Dictionary<string, Pool> _poolsDict = new Dictionary<string, Pool>();
 
-    private void Awake()
-    {
-        /*
-        foreach (var pool in _pools)
-        {
-            pool.Init(this.transform);
-            _poolsDict.Add(pool._key, pool);
-        }
-        */
-    }
-
     public void CreatePool(string key, GameObject prefab, int size, string name)
     {
         if (_poolsDict.ContainsKey(key))

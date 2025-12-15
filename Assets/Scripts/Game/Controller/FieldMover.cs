@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 public class FieldMover : MonoBehaviour
 {
     [SerializeField] private float _rotateAngle = 45f;
-    [SerializeField] private float _rotateSpeed = 10f;
+    [SerializeField] private float _rotateDuration = 0.2f;
 
     private float _targetYRotation;
 
@@ -29,6 +29,6 @@ public class FieldMover : MonoBehaviour
             _targetYRotation -= _rotateAngle;
         }
 
-        transform.DORotate(new Vector3(0, _targetYRotation, 0), 0.2f, RotateMode.Fast);
+        transform.DORotate(new Vector3(0, _targetYRotation, 0), _rotateDuration, RotateMode.Fast);
     }
 }

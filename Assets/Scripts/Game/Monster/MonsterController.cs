@@ -14,8 +14,6 @@ public class MonsterController : MonoBehaviour
     [SerializeField] private float _yOffset = 1f;
     [SerializeField] private float _moveDuration = 0.2f;
 
-    /* ---------- 초기화 ---------- */
-
     public void Initialize(int directionIndex)
     {
         DirectionIndex = directionIndex;
@@ -25,16 +23,12 @@ public class MonsterController : MonoBehaviour
         UpdatePositionImmediate();
     }
 
-    /* ---------- 이동 판단 ---------- */
-
     public int GetTargetStep(int delta)
     {
         if (delta > 0) return DistanceStep + 1;
         if (delta < 0) return Mathf.Max(0, DistanceStep - 1);
         return DistanceStep;
     }
-
-    /* ---------- 이동 적용 ---------- */
 
     public void ApplyMove(int targetStep)
     {
@@ -65,8 +59,6 @@ public class MonsterController : MonoBehaviour
             Mathf.Sin(angle) * radius
         );
     }
-
-    /* ---------- 파괴 ---------- */
 
     private void OnCollisionEnter(Collision collision)
     {

@@ -4,9 +4,10 @@ using UnityEngine.InputSystem;
 
 public class ShooterInput : MonoBehaviour
 {
-    [SerializeField] private Transform _firePoint;
-    [SerializeField] private float _bulletSpeed = 10f;
+    [SerializeField] private float _bulletSpeed = 20f;
+    [SerializeField] private float _firePointOffset = 1f;
 
+    private Vector3[] _firePoint;
     private PlayerInput _playerInput;
     private InputAction _fireUpAction;
     private InputAction _fireDownAction;
@@ -18,6 +19,10 @@ public class ShooterInput : MonoBehaviour
         _playerInput = GetComponent<PlayerInput>();
         _fireUpAction = _playerInput.actions["FireUp"];
         _fireDownAction = _playerInput.actions["FireDown"];
+
+        _firePoint = new Vector3[2];
+        _firePoint[0] = transform.position + new Vector3(0, 0, _firePointOffset);
+        _firePoint[1] = transform.position + new Vector3(0, 0, -_firePointOffset);
     }
 
     private async void Start()
@@ -61,7 +66,10 @@ public class ShooterInput : MonoBehaviour
     private void Fire(Vector3 dir)
     {
         GameObject bullet = Manager.Pool.Get("Bullet");
-        bullet.transform.position = _firePoint.transform.position;
+
+        if (dir == Vector3.forward) bullet.transform.position = _firePoint[0];
+        else bullet.transform.position = _firePoint[1];
+        
         bullet.GetComponent<Rigidbody>().linearVelocity = dir * _bulletSpeed;
         Manager.Game.turnStack.OtherAction();
     }

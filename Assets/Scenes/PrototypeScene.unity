@@ -1125,8 +1125,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ae611a6972996a048a3f1ed458090291, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ShooterInput
-  _firePoint: {fileID: 1267992989}
-  _bulletSpeed: 10
+  _bulletSpeed: 20
 --- !u!114 &1267992991
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1496,7 +1495,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::FieldMover
   _rotateAngle: 45
-  _rotateSpeed: 10
+  _rotateDuration: 0.2
 --- !u!114 &2022254673
 MonoBehaviour:
   m_ObjectHideFlags: 0
