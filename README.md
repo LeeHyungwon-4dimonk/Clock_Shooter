@@ -9,5 +9,5 @@
 | **장르** | Roguelike turn-based strategy defense  |
 | **엔진** | Unity |
 | **언어** | C# |
-| **개발 방식** | Git Flow |
+| **개발 방식** | Git |
 | **진행 기간** | *2025-12-11 ~ 진행중* |
