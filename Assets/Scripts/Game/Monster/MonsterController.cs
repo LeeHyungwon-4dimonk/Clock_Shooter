@@ -19,6 +19,8 @@ public class MonsterController : MonoBehaviour
     {
         DirectionIndex = directionIndex;
         DistanceStep = 0;
+
+        Manager.Game.monsterPositionManager.Register(this, DirectionIndex, DistanceStep);
         UpdatePosition();
     }
 
@@ -40,13 +42,21 @@ public class MonsterController : MonoBehaviour
 
     public void MoveForward()
     {
-        DistanceStep++;
+        int targetStep = DistanceStep + 1;
+
+        if (!Manager.Game.monsterPositionManager.TryMove(this, targetStep)) return;
+
+        DistanceStep = targetStep;
         UpdatePosition();
     }
 
     public void MoveBackward()
     {
-        DistanceStep = Mathf.Max(0, DistanceStep - 1);
+        int targetStep = DistanceStep - 1;
+
+        if (!Manager.Game.monsterPositionManager.TryMove(this, targetStep)) return;
+
+        DistanceStep = targetStep;
         UpdatePosition();
     }
 
@@ -66,6 +76,8 @@ public class MonsterController : MonoBehaviour
     public void OnCollisionEnter(Collision collision)
     {
         if (!collision.gameObject.CompareTag("Player")) return;
+
+        Manager.Game.monsterPositionManager.Unregister(DirectionIndex, DistanceStep);
 
         OnMonsterDestroyed?.Invoke();
         Manager.Pool.Return("Monster", gameObject);
