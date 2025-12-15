@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class MonsterController : MonoBehaviour
 {
-    [SerializeField] int moveTurn = 8;
+    [SerializeField] int moveTurn = 6;
     [SerializeField] float moveDuration = 0.2f;
 
     private float[] vectors = new float[2];

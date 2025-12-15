@@ -126,7 +126,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6cc1606011fae3148ab8dea96dd011dd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::MonsterController
-  moveTurn: 8
+  moveTurn: 6
   moveDuration: 0.2
 --- !u!54 &3118960471173814555
 Rigidbody:

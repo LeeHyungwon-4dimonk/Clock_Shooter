@@ -4,6 +4,9 @@ using UnityEngine;
 public class MonsterSummoner : MonoBehaviour
 {
     [SerializeField] private int _maxSummonNum = 8;
+    [SerializeField] private int _directionCount = 8;
+    [SerializeField] private float _spawnRadius = 13f;
+    [SerializeField] private float _yOffset = 1f;
 
     private int _summonNum;
     public bool IsInitialized { get; private set; } = false;
@@ -45,8 +48,18 @@ public class MonsterSummoner : MonoBehaviour
         if (_summonNum >= _maxSummonNum) return;
 
         GameObject monster = Manager.Pool.Get("Monster");
-        monster.transform.localPosition = new Vector3(0, 1, -13f);
+
+        int spawnIndex = Random.Range(0, _directionCount);
+        monster.transform.localPosition = GetSpawnPosition(spawnIndex);
+
         _summonNum++;
+    }
+
+    private Vector3 GetSpawnPosition(int index)
+    {
+        float angle = index * (360 / _directionCount);
+        float rad = angle * Mathf.Deg2Rad;
+        return new Vector3(Mathf.Cos(rad) * _spawnRadius, _yOffset, Mathf.Sin(rad) * _spawnRadius);
     }
 
     private void OnMonsterDestroyed()
