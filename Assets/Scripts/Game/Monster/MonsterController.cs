@@ -5,80 +5,74 @@ using UnityEngine;
 public class MonsterController : MonoBehaviour
 {
     public static event Action OnMonsterDestroyed;
+
     public int DirectionIndex { get; private set; }
     public int DistanceStep { get; private set; }
 
-    private float _stepDistance = 2.5f;
-    private float _spawnRadius = 13f;
-    private float _yOffset = 1f;
-    private int _directionCount = 8;
+    [SerializeField] private float _spawnRadius = 13f;
+    [SerializeField] private float _stepDistance = 2.5f;
+    [SerializeField] private float _yOffset = 1f;
+    [SerializeField] private float _moveDuration = 0.2f;
 
-    private float _moveDuration = 0.2f;
+    /* ---------- 초기화 ---------- */
 
     public void Initialize(int directionIndex)
     {
         DirectionIndex = directionIndex;
         DistanceStep = 0;
 
-        Manager.Game.monsterPositionManager.Register(this, DirectionIndex, DistanceStep);
-        UpdatePosition();
+        Manager.Game.monsterPositionManager.Register(this);
+        UpdatePositionImmediate();
     }
 
-    private void OnEnable()
+    /* ---------- 이동 판단 ---------- */
+
+    public int GetTargetStep(int delta)
     {
-        Manager.Game.turnStack.OnChanged += Move;
+        if (delta > 0) return DistanceStep + 1;
+        if (delta < 0) return Mathf.Max(0, DistanceStep - 1);
+        return DistanceStep;
     }
 
-    private void OnDisable()
+    /* ---------- 이동 적용 ---------- */
+
+    public void ApplyMove(int targetStep)
     {
-        Manager.Game.turnStack.OnChanged -= Move;
-    }
-
-    private void Move(int prev, int cur)
-    {
-        if (cur - prev < 0) MoveBackward();
-        else if(cur - prev > 0) MoveForward();
-    }
-
-    public void MoveForward()
-    {
-        int targetStep = DistanceStep + 1;
-
-        if (!Manager.Game.monsterPositionManager.TryMove(this, targetStep)) return;
-
         DistanceStep = targetStep;
         UpdatePosition();
     }
 
-    public void MoveBackward()
+    private void UpdatePositionImmediate()
     {
-        int targetStep = DistanceStep - 1;
-
-        if (!Manager.Game.monsterPositionManager.TryMove(this, targetStep)) return;
-
-        DistanceStep = targetStep;
-        UpdatePosition();
+        transform.localPosition = CalculatePosition();
     }
 
     private void UpdatePosition()
     {
         transform.DOKill();
-
-        float angle = DirectionIndex * (360f / _directionCount);
-        float rad = angle * Mathf.Deg2Rad;
-
-        float radius = _spawnRadius - (DistanceStep * _stepDistance);
-
-        Vector3 targetPos = new Vector3(Mathf.Cos(rad) * radius, _yOffset, Mathf.Sin(rad) * radius);
-        transform.DOLocalMove(targetPos, _moveDuration).SetEase(Ease.OutQuad);
+        transform.DOLocalMove(CalculatePosition(), _moveDuration)
+            .SetEase(Ease.OutQuad);
     }
 
-    public void OnCollisionEnter(Collision collision)
+    private Vector3 CalculatePosition()
+    {
+        float angle = DirectionIndex * (360f / 8f) * Mathf.Deg2Rad;
+        float radius = _spawnRadius - (DistanceStep * _stepDistance);
+
+        return new Vector3(
+            Mathf.Cos(angle) * radius,
+            _yOffset,
+            Mathf.Sin(angle) * radius
+        );
+    }
+
+    /* ---------- 파괴 ---------- */
+
+    private void OnCollisionEnter(Collision collision)
     {
         if (!collision.gameObject.CompareTag("Player")) return;
 
-        Manager.Game.monsterPositionManager.Unregister(DirectionIndex, DistanceStep);
-
+        Manager.Game.monsterPositionManager.Unregister(this);
         OnMonsterDestroyed?.Invoke();
         Manager.Pool.Return("Monster", gameObject);
     }

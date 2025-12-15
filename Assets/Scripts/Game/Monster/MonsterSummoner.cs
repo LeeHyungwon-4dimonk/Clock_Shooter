@@ -5,69 +5,61 @@ public class MonsterSummoner : MonoBehaviour
 {
     [SerializeField] private int _maxSummonNum = 8;
     [SerializeField] private int _directionCount = 8;
-    [SerializeField] private float _spawnRadius = 13f;
-    [SerializeField] private float _yOffset = 1f;
 
     private int _summonNum;
-    public bool IsInitialized { get; private set; } = false;
 
     private async void Start()
     {
         await InitAsync();
     }
 
-    public async Task InitAsync()
+    private async Task InitAsync()
     {
-        if (IsInitialized) return;
+        var monsterPrefab =
+            await AssetLoaderProvider.Loader.LoadAsync<GameObject>("Monster");
 
-        var monsterPrefab = await AssetLoaderProvider.Loader.LoadAsync<GameObject>("Monster");
-
-        Manager.Pool.CreatePool("Monster", monsterPrefab, 8, "Monsters", this.transform);
-
-        IsInitialized = true;
+        Manager.Pool.CreatePool(
+            "Monster",
+            monsterPrefab,
+            _maxSummonNum,
+            "Monsters",
+            transform
+        );
     }
 
     private void OnEnable()
     {
-        Manager.Game.turnStack.OnChanged += TrySummon;
+        Manager.Game.turnStack.OnChanged += OnTurnChanged;
         MonsterController.OnMonsterDestroyed += OnMonsterDestroyed;
     }
 
     private void OnDisable()
     {
-        Manager.Game.turnStack.OnChanged -= TrySummon;
+        Manager.Game.turnStack.OnChanged -= OnTurnChanged;
         MonsterController.OnMonsterDestroyed -= OnMonsterDestroyed;
     }
 
-    private void TrySummon(int prev, int cur)
+    private void OnTurnChanged(int prev, int cur)
     {
-        int turn = cur - prev;
+        int delta = cur - prev;
 
-        if (turn < 0) return;
+        // 이동은 중앙에서 단 한 번
+        Manager.Game.monsterPositionManager.ResolveTurnMove(delta);
 
+        // 전진일 때만 소환
+        if (delta <= 0) return;
         if (_summonNum >= _maxSummonNum) return;
 
         GameObject monster = Manager.Pool.Get("Monster");
+        int dir = Random.Range(0, _directionCount);
 
-        int spawnIndex = Random.Range(0, _directionCount);
-        monster.transform.localPosition = GetSpawnPosition(spawnIndex);
-
-        var controller = monster.GetComponent<MonsterController>();
-        controller.Initialize(spawnIndex);
+        monster.GetComponent<MonsterController>().Initialize(dir);
 
         _summonNum++;
     }
 
-    private Vector3 GetSpawnPosition(int index)
-    {
-        float angle = index * (360 / _directionCount);
-        float rad = angle * Mathf.Deg2Rad;
-        return new Vector3(Mathf.Cos(rad) * _spawnRadius, _yOffset, Mathf.Sin(rad) * _spawnRadius);
-    }
-
     private void OnMonsterDestroyed()
     {
-        _summonNum--;
-        _summonNum = Mathf.Max(_summonNum, 0);
+        _summonNum = Mathf.Max(0, _summonNum - 1);
     }
 }

@@ -4,34 +4,66 @@ public class MonsterPositionManager
 {
     private readonly Dictionary<int, Dictionary<int, MonsterController>> _slots = new();
 
-    public bool IsOccupied(int dir, int step)
+    private readonly HashSet<MonsterController> _monsters = new();
+
+    public void Register(MonsterController monster)
     {
-        return _slots.ContainsKey(dir) && _slots[dir].ContainsKey(step);
+        _monsters.Add(monster);
+
+        if (!_slots.ContainsKey(monster.DirectionIndex))
+            _slots[monster.DirectionIndex] = new Dictionary<int, MonsterController>();
+
+        _slots[monster.DirectionIndex][monster.DistanceStep] = monster;
     }
 
-    public void Register(MonsterController monster, int dir, int step)
+    public void Unregister(MonsterController monster)
     {
-        if(!_slots.ContainsKey(dir)) _slots[dir] = new Dictionary<int, MonsterController>();
+        _monsters.Remove(monster);
 
-        _slots[dir][step] = monster;
+        if (_slots.TryGetValue(monster.DirectionIndex, out var dirSlots))
+            dirSlots.Remove(monster.DistanceStep);
     }
 
-    public void Unregister(int dir, int step)
+    public void ResolveTurnMove(int delta)
     {
-        if(_slots.ContainsKey(dir)) _slots[dir].Remove(step);
+        if (delta == 0) return;
+
+        foreach (var dirPair in _slots)
+        {
+            ResolveDirectionMove(dirPair.Key, delta);
+        }
     }
 
-    public bool TryMove(MonsterController monster, int targetStep)
+    private void ResolveDirectionMove(int dir, int delta)
     {
-        int dir = monster.DirectionIndex;
+        if (!_slots.ContainsKey(dir)) return;
 
-        if (IsOccupied(dir, targetStep)) return false;
+        var dirSlots = _slots[dir];
 
-        if(targetStep < 0) return false;
+        List<int> steps = new List<int>(dirSlots.Keys);
 
-        Unregister(dir, monster.DistanceStep);
-        Register(monster, dir, targetStep);
+        if (delta < 0) steps.Sort();
+        else steps.Sort((a, b) => b - a);
 
-        return true;
+        HashSet<int> moved = new HashSet<int>();
+
+        foreach (int step in steps)
+        {
+            if (!dirSlots.ContainsKey(step)) continue;
+
+            MonsterController monster = dirSlots[step];
+            int target = monster.GetTargetStep(delta);
+
+            if (target == step) continue;
+
+            if (!dirSlots.ContainsKey(target) || moved.Contains(target))
+            {
+                dirSlots.Remove(step);
+                monster.ApplyMove(target);
+                dirSlots[target] = monster;
+
+                moved.Add(target);
+            }
+        }
     }
 }
