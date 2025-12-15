@@ -18,13 +18,7 @@ public class MonsterSummoner : MonoBehaviour
         var monsterPrefab =
             await AssetLoaderProvider.Loader.LoadAsync<GameObject>("Monster");
 
-        Manager.Pool.CreatePool(
-            "Monster",
-            monsterPrefab,
-            _maxSummonNum,
-            "Monsters",
-            transform
-        );
+        Manager.Pool.CreatePool("Monster", monsterPrefab, _maxSummonNum, "Monsters", transform);
     }
 
     private void OnEnable()
