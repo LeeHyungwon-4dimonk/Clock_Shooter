@@ -20,13 +20,13 @@ public class FieldMover : MonoBehaviour
 
         if (input.x > 0.1f)
         {
-            _targetYRotation += _rotateAngle;
             Manager.Game.turnStack.MoveClockwise();
+            _targetYRotation += _rotateAngle;
         }
         else if (input.x < -0.1f)
         {
+            if(!Manager.Game.turnStack.TryMoveCounterClockwise()) return;
             _targetYRotation -= _rotateAngle;
-            Manager.Game.turnStack.TryMoveCounterClockwise();
         }
 
         transform.DORotate(new Vector3(0, _targetYRotation, 0), 0.2f, RotateMode.Fast);

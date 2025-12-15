@@ -23,7 +23,7 @@ public class TurnStack
 
     public bool TryMoveCounterClockwise(int amount = 1)
     {
-        if(Current < amount) return false;
+        if(Current - amount < 0) return false;
 
         int prev = Current;
         Current -= amount;

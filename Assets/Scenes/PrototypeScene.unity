@@ -544,7 +544,7 @@ BoxCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -1629,8 +1629,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MonsterSummoner
   _maxSummonNum: 8
   _directionCount: 8
-  _spawnRadius: 13
-  _yOffset: 1
 --- !u!1001 &9059498964707969849
 PrefabInstance:
   m_ObjectHideFlags: 0

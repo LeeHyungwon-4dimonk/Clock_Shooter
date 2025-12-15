@@ -55,5 +55,6 @@ public class MonsterSummoner : MonoBehaviour
     private void OnMonsterDestroyed()
     {
         _summonNum = Mathf.Max(0, _summonNum - 1);
+        Debug.Log(_summonNum);
     }
 }

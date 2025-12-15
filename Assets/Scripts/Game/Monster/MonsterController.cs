@@ -70,10 +70,17 @@ public class MonsterController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (!collision.gameObject.CompareTag("Player")) return;
-
-        Manager.Game.monsterPositionManager.Unregister(this);
-        OnMonsterDestroyed?.Invoke();
-        Manager.Pool.Return("Monster", gameObject);
+        if (collision.gameObject.CompareTag("Player"))
+        {
+            Manager.Game.monsterPositionManager.Unregister(this);
+            OnMonsterDestroyed?.Invoke();
+            Manager.Pool.Return("Monster", gameObject);
+        }
+        else if(collision.gameObject.CompareTag("Bullet"))
+        {
+            Manager.Game.monsterPositionManager.Unregister(this);
+            OnMonsterDestroyed?.Invoke();
+            Manager.Pool.Return("Monster", gameObject);
+        }
     }
 }
