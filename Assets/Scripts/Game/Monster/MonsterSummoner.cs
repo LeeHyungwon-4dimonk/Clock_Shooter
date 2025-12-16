@@ -41,9 +41,7 @@ public class MonsterSummoner : MonoBehaviour
 
         Manager.Game.monsterPositionManager.ResolveTurnMove(delta);
 
-        if (delta <= 0) return;
-        if (_summonNum >= _maxSummonNum) return;
-        if(_summonTurn < _summonTurnOffset) return;
+        if (delta <= 0 || _summonNum >= _maxSummonNum || _summonTurn < _summonTurnOffset) return;
 
         GameObject monster = Manager.Pool.Get("Monster");
         int dir = Random.Range(0, _directionCount);
@@ -51,7 +49,7 @@ public class MonsterSummoner : MonoBehaviour
         monster.GetComponent<MonsterController>().Initialize(dir);
 
         _summonNum++;
-        if(_summonTurn >= _summonTurnOffset) _summonTurn = 0;
+        if (_summonTurn >= _summonTurnOffset) _summonTurn = 0;
     }
 
     private void OnMonsterDestroyed()
