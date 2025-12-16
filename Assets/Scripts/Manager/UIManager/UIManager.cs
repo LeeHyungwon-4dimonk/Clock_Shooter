@@ -76,7 +76,6 @@ public class UIManager : Singleton<UIManager>
 
         if(_uiCache.TryGetValue(key, out var ui))
             return ui;
-        Debug.Log(key.Name);
 
         var prefab = Resources.Load<T>(key.Name);
         var parent = type == UIType.Screen ? _screenRoot : _popupRoot;

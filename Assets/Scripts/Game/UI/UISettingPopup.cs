@@ -1,17 +1,16 @@
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class UISettingPopup : UIBase
 {
-    [SerializeField] private Button _closeButton;
+    [SerializeField] private Button _resumeButton;
 
     private void Awake()
     {
-        _closeButton.onClick.AddListener(OnClickClose);
+        _resumeButton.onClick.AddListener(OnClickResume);
     }
 
-    private void OnClickClose()
+    private void OnClickResume()
     {
         Manager.UI.CloseUI<UISettingPopup>();
     }

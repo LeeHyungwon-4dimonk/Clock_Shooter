@@ -5,9 +5,30 @@ public class UIGameScreen : UIBase
 {
     [SerializeField] private Button _settingButton;
 
+    [SerializeField] private Image _stackGauge;
+
+    private float _stackCount = 0;
+
     private void Awake()
     {
         _settingButton.onClick.AddListener(OnClickSetting);
+        InitializeStackUI();
+    }
+
+    private void OnEnable()
+    {
+        Manager.Game.turnStack.OnChanged += StackUIUpdate;
+    }
+
+    private void InitializeStackUI()
+    {
+        _stackGauge.fillAmount = _stackCount;
+    }
+
+    private void StackUIUpdate(int prev, int cur)
+    {
+        _stackCount = Manager.Game.turnStack.Current;
+        _stackGauge.fillAmount = _stackCount / 8;
     }
 
     private void OnClickSetting()
