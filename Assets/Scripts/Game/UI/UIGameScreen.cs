@@ -1,4 +1,5 @@
 using DG.Tweening;
+using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
@@ -11,6 +12,7 @@ public class UIGameScreen : UIBase
     [SerializeField] private Image[] _stackGaugeImgs;
     [SerializeField] private Color[] _gaugeColors;
     [SerializeField] private Color _emptyColor = Color.black;
+    [SerializeField] private TMP_Text _stackText;
 
     private float _curStack;
     private float _dir;
@@ -28,7 +30,7 @@ public class UIGameScreen : UIBase
         Manager.Game.turnStack.OnChanged += StackUIUpdate;
     }
 
-    #region StackGauge
+    #region StackUI
 
     private void StackUIInitialize()
     {
@@ -37,6 +39,7 @@ public class UIGameScreen : UIBase
             _stackGaugeImgs[i].color = _emptyColor;
             _stackGaugeImgs[i].fillAmount = 1;
         }
+        _stackText.text = "0";
     }
 
     private void StackUIUpdate(int prev, int cur)
@@ -57,7 +60,8 @@ public class UIGameScreen : UIBase
             _curStack,
             0.3f
             )
-            .SetEase(Ease.OutCubic);        
+            .SetEase(Ease.OutCubic);
+        _stackText.text = $"{_curStack}";
     }
 
     private void UpdateStackColor(float stackCount)
