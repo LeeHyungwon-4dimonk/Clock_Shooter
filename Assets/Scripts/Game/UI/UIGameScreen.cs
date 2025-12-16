@@ -20,6 +20,8 @@ public class UIGameScreen : UIBase
         Manager.Game.turnStack.OnChanged += StackUIUpdate;
     }
 
+    #region StackGauge
+
     private void InitializeStackUI()
     {
         _stackGauge.fillAmount = _stackCount;
@@ -28,8 +30,10 @@ public class UIGameScreen : UIBase
     private void StackUIUpdate(int prev, int cur)
     {
         _stackCount = Manager.Game.turnStack.Current;
-        _stackGauge.fillAmount = _stackCount / 8;
+        _stackGauge.fillAmount = _stackCount / Manager.Game.Direction;
     }
+
+    #endregion
 
     private void OnClickSetting()
     {

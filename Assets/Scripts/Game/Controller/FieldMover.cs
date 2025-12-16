@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class FieldMover : MonoBehaviour
 {
-    [SerializeField] private float _rotateAngle = 45f;
+    [SerializeField] private float _rotateAngle;
     [SerializeField] private float _rotateDuration = 0.2f;
 
     private float _targetYRotation;
@@ -12,6 +12,7 @@ public class FieldMover : MonoBehaviour
     void Start()
     {
         _targetYRotation = transform.eulerAngles.y;
+        _rotateAngle = 360 / Manager.Game.Direction;
     }
 
     public void OnMove(InputValue value)
