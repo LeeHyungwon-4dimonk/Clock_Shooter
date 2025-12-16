@@ -149,8 +149,8 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 2095055926}
   - {fileID: 1494509678}
+  - {fileID: 2095055926}
   m_Father: {fileID: 2115011797}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
@@ -1929,8 +1929,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::UIGameScreen
   _settingButton: {fileID: 1373871809}
   _stackGaugeImgs:
-  - {fileID: 1494509679}
   - {fileID: 2095055927}
+  - {fileID: 1494509679}
   _gaugeColors:
   - {r: 0, g: 0.5162258, b: 1, a: 1}
   - {r: 0, g: 0.23950672, b: 1, a: 1}
