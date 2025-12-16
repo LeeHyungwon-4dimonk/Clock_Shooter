@@ -56,6 +56,7 @@ public class MonsterPositionManager
 
             if (target == step) continue;
 
+            // 이동하려는 슬롯이 비어있거나, 빌 예정일 때
             if (!dirSlots.ContainsKey(target) || moved.Contains(target))
             {
                 dirSlots.Remove(step);

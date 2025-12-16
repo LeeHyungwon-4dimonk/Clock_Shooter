@@ -10,14 +10,17 @@ public class MonsterController : MonoBehaviour
     public int DistanceStep { get; private set; }
 
     [SerializeField] private float _spawnRadius = 13f;
-    [SerializeField] private float _stepDistance = 2.5f;
+    [SerializeField] private int _arriveTurn = 7;
     [SerializeField] private float _yOffset = 1f;
     [SerializeField] private float _moveDuration = 0.2f;
+
+    private float _moveDistance;
 
     public void Initialize(int directionIndex)
     {
         DirectionIndex = directionIndex;
         DistanceStep = 0;
+        _moveDistance = _spawnRadius / _arriveTurn;
 
         Manager.Game.monsterPositionManager.Register(this);
         UpdatePositionImmediate();
@@ -44,20 +47,15 @@ public class MonsterController : MonoBehaviour
     private void UpdatePosition()
     {
         transform.DOKill();
-        transform.DOLocalMove(CalculatePosition(), _moveDuration)
-            .SetEase(Ease.OutQuad);
+        transform.DOLocalMove(CalculatePosition(), _moveDuration).SetEase(Ease.OutQuad);
     }
 
     private Vector3 CalculatePosition()
     {
         float angle = DirectionIndex * (360f / 8f) * Mathf.Deg2Rad;
-        float radius = _spawnRadius - (DistanceStep * _stepDistance);
+        float radius = _spawnRadius - (DistanceStep * _moveDistance);
 
-        return new Vector3(
-            Mathf.Cos(angle) * radius,
-            _yOffset,
-            Mathf.Sin(angle) * radius
-        );
+        return new Vector3(Mathf.Cos(angle) * radius, _yOffset, Mathf.Sin(angle) * radius);
     }
 
     private void OnCollisionEnter(Collision collision)

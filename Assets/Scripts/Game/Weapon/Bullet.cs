@@ -6,7 +6,7 @@ public class Bullet : MonoBehaviour
     {
         if(collision.gameObject.CompareTag("OutArea") || collision.gameObject.CompareTag("Monster"))
         {
-            Manager.Pool.Return("Bullet", this.gameObject);
+            Manager.Pool.Return("Bullet", gameObject);
         }
     }
 }
