@@ -4,8 +4,7 @@ using UnityEngine;
 
 public class MonsterController : MonoBehaviour
 {
-    public static event Action OnMonsterDestroyed;
-
+    public event Action<Collision> OnHit;
     public int DirectionIndex { get; private set; }
     public int DistanceStep { get; private set; }
 
@@ -18,6 +17,8 @@ public class MonsterController : MonoBehaviour
 
     public void Initialize(int directionIndex)
     {
+        transform.DOKill();
+
         DirectionIndex = directionIndex;
         DistanceStep = 0;
         _moveDistance = _spawnRadius / _arriveTurn;
@@ -60,17 +61,6 @@ public class MonsterController : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Player"))
-        {
-            Manager.Game.monsterPositionManager.Unregister(this);
-            OnMonsterDestroyed?.Invoke();
-            Manager.Pool.Return("Monster", gameObject);
-        }
-        else if(collision.gameObject.CompareTag("Bullet"))
-        {
-            Manager.Game.monsterPositionManager.Unregister(this);
-            OnMonsterDestroyed?.Invoke();
-            Manager.Pool.Return("Monster", gameObject);
-        }
+        OnHit?.Invoke(collision);
     }
 }

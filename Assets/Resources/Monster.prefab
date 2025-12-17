@@ -171,3 +171,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Monster
   statData: {fileID: 11400000, guid: 93557a335ca5432458cee173e5540712, type: 2}
+  _controller: {fileID: 1787088480809763251}

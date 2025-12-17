@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-
+using UnityEngine;
 public class MonsterPositionManager
 {
     private readonly Dictionary<int, Dictionary<int, MonsterController>> _slots = new();
@@ -14,6 +14,9 @@ public class MonsterPositionManager
             _slots[monster.DirectionIndex] = new Dictionary<int, MonsterController>();
 
         _slots[monster.DirectionIndex][monster.DistanceStep] = monster;
+
+        Debug.Log($"Register: {monster.GetInstanceID()} {monster.DirectionIndex}:{monster.DistanceStep}");
+       
     }
 
     public void Unregister(MonsterController monster)
@@ -21,7 +24,13 @@ public class MonsterPositionManager
         _monsters.Remove(monster);
 
         if (_slots.TryGetValue(monster.DirectionIndex, out var dirSlots))
-            dirSlots.Remove(monster.DistanceStep);
+        {
+            if (dirSlots.TryGetValue(monster.DistanceStep, out var m) && m == monster)
+            {
+                dirSlots.Remove(monster.DistanceStep);
+            }
+        }
+        Debug.Log($"Unregister: {monster.GetInstanceID()} {monster.DirectionIndex}:{monster.DistanceStep}");
     }
 
     public void ResolveTurnMove(int delta)

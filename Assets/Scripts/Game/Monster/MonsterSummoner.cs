@@ -25,13 +25,13 @@ public class MonsterSummoner : MonoBehaviour
     private void OnEnable()
     {
         Manager.Game.turnStack.OnChanged += OnTurnChanged;
-        MonsterController.OnMonsterDestroyed += OnMonsterDestroyed;
+        Manager.Status.OnMonsterDied += OnMonsterDied;
     }
 
     private void OnDisable()
     {
         Manager.Game.turnStack.OnChanged -= OnTurnChanged;
-        MonsterController.OnMonsterDestroyed -= OnMonsterDestroyed;
+        Manager.Status.OnMonsterDied -= OnMonsterDied;
     }
 
     private void OnTurnChanged(int prev, int cur)
@@ -52,7 +52,7 @@ public class MonsterSummoner : MonoBehaviour
         if (_summonTurn >= _summonTurnOffset) _summonTurn = 0;
     }
 
-    private void OnMonsterDestroyed()
+    private void OnMonsterDied()
     {
         _summonNum = Mathf.Max(0, _summonNum - 1);
     }

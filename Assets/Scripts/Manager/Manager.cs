@@ -4,8 +4,8 @@ public static class Manager
 {
     public static PoolManager Pool => PoolManager.Instance;
     public static GameManager Game => GameManager.Instance;
-
     public static UIManager UI => UIManager.Instance;
+    public static StatusManager Status => StatusManager.Instance;
 
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
     private static void Init()
@@ -13,6 +13,7 @@ public static class Manager
         AssetLoaderProvider.Initialize(new ResourcesAssetLoader());
         PoolManager.CreateInstance();
         UIManager.CreateInstance();
-        GameManager.CreateInstance();        
+        GameManager.CreateInstance();
+        StatusManager.CreateInstance();
     }
 }
