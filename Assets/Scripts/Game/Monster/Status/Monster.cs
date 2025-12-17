@@ -1,27 +1,36 @@
-using System;
 using UnityEngine;
 
 public class Monster : MonoBehaviour
 {
-    [SerializeField] private MonsterStatData statData;
-    private MonsterController _controller;
-
     public MonsterStats Stats { get; private set; }
+    
+    [SerializeField] private MonsterStatData statData;
+    
+    private MonsterController _controller;
+    private bool _subscribed;
 
     private void Awake()
     {
         _controller = GetComponent<MonsterController>();
-        Stats = new MonsterStats(statData);
     }
 
-    private void OnEnable()
+    public void Initialize()
     {
-        _controller.OnHit += HandleHit;
+        if(!_subscribed)
+        {
+            Stats = new MonsterStats(statData);
+            _controller.OnHit += HandleHit;
+            _subscribed = true;
+        }
     }
 
-    private void OnDisable()
+    public void ResetState()
     {
-        _controller.OnHit -= HandleHit;
+        if(_subscribed)
+        {
+            _controller.OnHit -= HandleHit;
+            _subscribed = false;
+        }
     }
 
     private void HandleHit(Collision collision)
@@ -38,6 +47,7 @@ public class Monster : MonoBehaviour
 
     public void Die()
     {
+        ResetState();
         Manager.Game.monsterPositionManager.Unregister(_controller);
         Manager.Pool.Return("Monster", gameObject);
     }

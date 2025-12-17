@@ -44,8 +44,11 @@ public class MonsterSummoner : MonoBehaviour
         if (delta <= 0 || _summonNum >= _maxSummonNum || _summonTurn < _summonTurnOffset) return;
 
         GameObject monster = Manager.Pool.Get("Monster");
-        int dir = Random.Range(0, _directionCount);
 
+        var monsterComp = monster.GetComponent<Monster>();
+        monsterComp.Initialize();
+
+        int dir = Random.Range(0, _directionCount);
         monster.GetComponent<MonsterController>().Initialize(dir);
 
         _summonNum++;
